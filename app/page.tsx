@@ -174,6 +174,21 @@ const footerMenus = [
   }
 ];
 
+const megaMenus = [
+  {
+    title: "School",
+    links: ["Welcome to Ajyal", "From the Principal", "ADEK Rating", "Student Life"]
+  },
+  {
+    title: "Admissions",
+    links: ["Admissions Process", "Fee Structure", "Book a Tour", "Frequently Asked Questions"]
+  },
+  {
+    title: "Learning",
+    links: ["Early Years", "Primary School", "Secondary School", "University Preparation"]
+  }
+];
+
 export default function Home() {
   return (
     <main>
@@ -203,9 +218,43 @@ export default function Home() {
           <a className="quick-call" href="tel:026968500" aria-label="Call Ajyal">
             <Phone size={18} />
           </a>
-          <button className="menu-button" aria-label="Open menu">
-            <Menu size={22} />
-          </button>
+          <details className="mega-menu">
+            <summary className="menu-button" aria-label="Open menu">
+              <Menu size={22} />
+            </summary>
+            <div className="mega-panel">
+              <div className="mega-panel-inner">
+                <div className="mega-intro">
+                  <span>Ajyal International School</span>
+                  <strong>Explore the school in one place.</strong>
+                  <p>
+                    Find admissions, learning stages, student life, and contact
+                    details for our British curriculum community in MBZ.
+                  </p>
+                </div>
+                <div className="mega-links">
+                  {megaMenus.map((menu) => (
+                    <div key={menu.title}>
+                      <h3>{menu.title}</h3>
+                      {menu.links.map((link) => (
+                        <a href={`#${link.toLowerCase().replaceAll(" ", "-")}`} key={link}>
+                          {link}
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div className="mega-actions">
+                  <a className="button button-primary" href="#contact">
+                    Book a Tour <ArrowUpRight size={18} />
+                  </a>
+                  <a className="button button-light" href="mailto:info@ajyal.sch.ae">
+                    Enquire Now <MessageCircle size={18} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
       </header>
 
@@ -560,6 +609,15 @@ export default function Home() {
               in Mohammed Bin Zayed City, Abu Dhabi. Our purpose-built campus
               supports students from Early Years through Secondary.
             </p>
+            <div className="faq-photo" data-image-reveal>
+              <Image
+                src={asset("/wp-content/uploads/ajayl-imported/banner-slider-02.jpg")}
+                alt="Ajyal students in a bright classroom"
+                fill
+                sizes="(max-width: 1040px) 100vw, 36vw"
+              />
+              <span>Admissions support from first question to first day</span>
+            </div>
           </div>
           <div className="faq-list">
             {faqItems.map((item, index) => (
@@ -591,7 +649,7 @@ export default function Home() {
           </div>
           <div className="insta-grid">
             {instagramFeed.map(([src, label], index) => (
-              <figure className={`insta-card insta-card-${index + 1}`} key={src} data-image-reveal data-parallax-frame>
+              <figure className={`insta-card insta-card-${index + 1}`} key={src} data-image-reveal>
                 <Image
                   src={asset(src)}
                   alt={`${label} moment at Ajyal`}

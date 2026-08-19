@@ -10,16 +10,27 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SmoothScroll() {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isFigmaCapture = window.location.hash.includes("figmacapture=");
 
-    if (reducedMotion) {
-      gsap.set("[data-mask]", { opacity: 1, y: 0 });
+    if (reducedMotion || isFigmaCapture) {
+      gsap.set("[data-mask]", { autoAlpha: 1, opacity: 1, y: 0 });
+      gsap.set("[data-image-reveal]", {
+        autoAlpha: 1,
+        opacity: 1,
+        clipPath: "inset(0% 0% 0% 0%)"
+      });
+      gsap.set("[data-image-reveal] img", { scale: 1, yPercent: 0 });
+      gsap.set("[data-parallax-frame], [data-parallax-image]", {
+        xPercent: 0,
+        yPercent: 0,
+        scale: 1
+      });
       return;
     }
 
     const masks = gsap.utils.toArray<HTMLElement>("[data-mask]");
     const revealImages = gsap.utils.toArray<HTMLElement>("[data-image-reveal]");
     const collageFrames = gsap.utils.toArray<HTMLElement>(".campus-collage [data-parallax-frame]");
-    const parallaxFrames = gsap.utils.toArray<HTMLElement>(".instagram-feed [data-parallax-frame]");
     const progressBar = document.querySelector<HTMLElement>(".scroll-progress span");
 
     gsap.set(masks, {
@@ -107,7 +118,7 @@ export default function SmoothScroll() {
       }
     });
 
-    [...collageFrames, ...parallaxFrames].forEach((frame, index) => {
+    collageFrames.forEach((frame, index) => {
       const image = frame.querySelector("img");
 
       if (!image) {
